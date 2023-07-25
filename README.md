@@ -1,4 +1,4 @@
-Background Context
+
 Write a simple UNIX command interpreter.
 
 “The Gates of Shell”, by Spencer Cheng, featuring Julien Barbier
