@@ -46,7 +46,7 @@ int launch_process(char **args, char *pr_name, char **env)
 	else
 	{
 		wait(&status);
-		if (status != 0)
+		/*if (status != 0)*/
 			if (!isatty(STDIN_FILENO))
 				_exit(2);
 	}
