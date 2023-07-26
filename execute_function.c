@@ -46,9 +46,14 @@ int launch_process(char **args, char *pr_name, char **env)
 	else
 	{
 		wait(&status);
-		/*if (status != 0)*/
+		if (status != 0)
 			if (!isatty(STDIN_FILENO))
+			{
+				free(args[0]);
+				args[0] = "h";
+				free(args);
 				_exit(2);
+			}
 	}
 	return (1);
 }

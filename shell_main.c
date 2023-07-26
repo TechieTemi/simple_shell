@@ -26,6 +26,7 @@ int main(int ac __attribute__((unused)), char **av, char **env)
 			path = get_env("PATH=", env);
 			pathval = gpval(path);
 			full_path = find_program_inpath(line_args[0], pathval);
+			free(path); /*Free the memory allocated for the input path*/
 			if (full_path != NULL)
 			{
 				line_args[0] = full_path;
@@ -36,15 +37,12 @@ int main(int ac __attribute__((unused)), char **av, char **env)
 				print_error(av[0], line_args[0], "not found", "");
 				if (!isatty(STDIN_FILENO))
 				{
-					free(path);		 /*Free the memory allocated for the input path*/
+					/*free(path);		 Free the memory allocated for the input path*/
 					free(line);		 /*Free the memory allocated for the input line*/
 					free(line_args); /*Free the memory allocated for the arguments*/
 					_exit(127);
 				}
 			}
-			free(path); /*Free the memory allocated for the input path*/
-			if (isatty(STDIN_FILENO))
-				free(line_args[0]);
 		}
 		free(line);		 /*Free the memory allocated for the input line*/
 		free(line_args); /*Free the memory allocated for the arguments*/
