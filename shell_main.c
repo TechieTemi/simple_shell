@@ -43,8 +43,7 @@ int main(int ac __attribute__((unused)), char **av, char **env)
 				}
 			}
 			free(path); /*Free the memory allocated for the input path*/
-			if (isatty(STDIN_FILENO))
-				free(line_args[0]);
+			free(line_args[0]);
 		}
 		free(line);		 /*Free the memory allocated for the input line*/
 		free(line_args); /*Free the memory allocated for the arguments*/
