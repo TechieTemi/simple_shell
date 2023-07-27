@@ -1,29 +1,29 @@
 #include "shell.h"
 
-
-
 /**
  * execute_shell - Execute a shell command
+ * @full_path: full path to the prgram to be executed
  * @args: Array of arguments for the command
  * @pr_name: programe name.
  * @env: Array containing environment variables
  *
  * Return: Status code indicating the result of the command execution
  */
-int execute_shell(char **args, char *pr_name, char **env)
+int execute_shell(char *full_path, char **args, char *pr_name, char **env)
 {
-	return (launch_process(args, pr_name, env));
+	return (launch_process(full_path, args, pr_name, env));
 }
 
 /**
  * launch_process - Launch a process
+ * @full_path: full path to the prgram to be executed
  * @args: Array of arguments for the process
  * @pr_name: programe name.
  * @env: Array containing environment variables
  *
  * Return: Status code indicating the result of the process execution
  */
-int launch_process(char **args, char *pr_name, char **env)
+int launch_process(char *full_path, char **args, char *pr_name, char **env)
 {
 	pid_t pid;
 	int status;
@@ -32,9 +32,9 @@ int launch_process(char **args, char *pr_name, char **env)
 	if (pid == 0)
 	{
 		/* Child process */
-		if (execve(args[0], args, env) == -1)
+		if (execve(full_path, args, env) == -1)
 		{
-			print_error(pr_name, args[0], "not found", "");
+			print_error(pr_name, full_path, "not found", "");
 			exit(EXIT_FAILURE);
 		}
 	}
@@ -47,16 +47,12 @@ int launch_process(char **args, char *pr_name, char **env)
 	{
 		wait(&status);
 		if (status != 0)
-		{
-			free(args[0]);
-			args[0] = "h";
-			free(args);
 			if (!isatty(STDIN_FILENO))
 			{
+				free(full_path);
+				free(args);
 				_exit(2);
 			}
-			return (2);
-		}
 	}
 	return (1);
 }

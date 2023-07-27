@@ -20,7 +20,7 @@ int main(int ac __attribute__((unused)), char **av, char **env)
 			print_output("$ ");
 		line = read_line_shell();	  /*Read input from the user*/
 		line_args = parse_line(line); /*Parse the input into arguments*/
-		status = is_builtin(line_args, av[0], env);
+		status = is_builtin(line, line_args, av[0], env);
 		if (status == -11)
 		{
 			path = get_env("PATH=", env);
@@ -29,10 +29,8 @@ int main(int ac __attribute__((unused)), char **av, char **env)
 			free(path); /*Free the memory allocated for the input path*/
 			if (full_path != NULL)
 			{
-				line_args[0] = full_path;
-				status = execute_shell(line_args, av[0], env); /*Execute the command*/
-				if (status == 2)
-					continue;
+				status = execute_shell(full_path, line_args, av[0], env);
+				free(full_path);
 			}
 			else
 			{
@@ -44,8 +42,6 @@ int main(int ac __attribute__((unused)), char **av, char **env)
 					_exit(127);
 				}
 			}
-			if (isatty(STDIN_FILENO) && full_path != NULL)
-				free(line_args[0]);
 		}
 		free(line);		 /*Free the memory allocated for the input line*/
 		free(line_args); /*Free the memory allocated for the arguments*/

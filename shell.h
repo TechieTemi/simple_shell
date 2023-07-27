@@ -22,8 +22,8 @@ char *find_program(char *program);
 int is_equal(const char *str1, const char *str2);
 char *read_line_shell(void);
 char **parse_line(char *line);
-int execute_shell(char **args, char *pr_name, char **env);
-int launch_process(char **args, char *pr_name, char **env);
+int execute_shell(char *full_path, char **args, char *pr_name, char **env);
+int launch_process(char *full_path, char **args, char *pr_name, char **env);
 int hsh_cd(char **args, char *pr_name);
 int hsh_help(void);
 int hsh_exit(void);
@@ -32,6 +32,7 @@ void print_output(const char *str);
 void print_error(const char *name, const char *cmd, char *ermsg, char *badag);
 char *gpval(char *path);
 char *get_env(char *name, char **my_env);
-int is_builtin(char **args, char *pr_name, char **env);
+int is_builtin(char *line, char **args, char *pr_name, char **env);
+int execnopath(char *line, char **args, char *pr_name, char **env);
 
 #endif
