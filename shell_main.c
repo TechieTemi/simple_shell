@@ -31,18 +31,21 @@ int main(int ac __attribute__((unused)), char **av, char **env)
 			{
 				line_args[0] = full_path;
 				status = execute_shell(line_args, av[0], env); /*Execute the command*/
+				if (status == 2)
+					continue;
 			}
 			else
 			{
 				print_error(av[0], line_args[0], "not found", "");
 				if (!isatty(STDIN_FILENO))
 				{
-					/*free(path);		 Free the memory allocated for the input path*/
 					free(line);		 /*Free the memory allocated for the input line*/
 					free(line_args); /*Free the memory allocated for the arguments*/
 					_exit(127);
 				}
 			}
+			if (isatty(STDIN_FILENO) && full_path != NULL)
+				free(line_args[0]);
 		}
 		free(line);		 /*Free the memory allocated for the input line*/
 		free(line_args); /*Free the memory allocated for the arguments*/
